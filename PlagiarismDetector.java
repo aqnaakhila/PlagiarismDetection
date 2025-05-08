@@ -1,19 +1,17 @@
-package tugas_plagiarism;
-
 import java.util.*;
 import java.util.regex.*;
 
-public class PlagiarismDetector {
+public class PlagiarismDetector implements Detector {
     private Map<String, String> sinonimMap;
 
     public PlagiarismDetector(Map<String, String> sinonimMap) {
         this.sinonimMap = sinonimMap;
     }
 
-    public String bandingkanStruktur(String kalimatSumber, String kalimatDuplikat) {
+    @Override
+    public String compareStructure(String kalimatSumber, String kalimatDuplikat) {
         String patternRegex = buatRegexDariKalimat(kalimatSumber, sinonimMap);
 
-        // Coba cocokkan kalimat duplikat dengan pattern regex yang dibentuk
         Pattern pattern = Pattern.compile(patternRegex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(kalimatDuplikat);
 
@@ -21,7 +19,7 @@ public class PlagiarismDetector {
             Map<String, String> kataDiganti = cariPenggantianKata(kalimatSumber, kalimatDuplikat);
             StringBuilder laporan = new StringBuilder("Struktur mirip | Kata diganti: ");
             for (Map.Entry<String, String> entry : kataDiganti.entrySet()) {
-                laporan.append(entry.getKey()).append(" → ").append(entry.getValue()).append(" ; ");
+                laporan.append(entry.getKey()).append(" -> ").append(entry.getValue()).append(" ; ");
             }
             return laporan.toString();
         } else {
@@ -29,7 +27,6 @@ public class PlagiarismDetector {
         }
     }
 
-    // Buat regex pattern dinamis dari kalimat sumber
     private String buatRegexDariKalimat(String kalimat, Map<String, String> sinonimMap) {
         StringBuilder patternBuilder = new StringBuilder();
         String[] kataArray = kalimat.split("\\s+");
@@ -48,7 +45,6 @@ public class PlagiarismDetector {
         return patternBuilder.toString();
     }
 
-    // Cari kata yang diganti (berdasarkan sinonim)
     private Map<String, String> cariPenggantianKata(String kalimat1, String kalimat2) {
         String[] kata1 = kalimat1.split("\\s+");
         String[] kata2 = kalimat2.split("\\s+");
@@ -61,7 +57,6 @@ public class PlagiarismDetector {
                 diganti.put(k1, k2);
             }
         }
-
         return diganti;
     }
 

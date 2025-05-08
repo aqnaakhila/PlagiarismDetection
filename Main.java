@@ -1,5 +1,3 @@
-package tugas_plagiarism;
-
 import java.util.*;
 
 public class Main {
@@ -11,15 +9,12 @@ public class Main {
         System.out.println("Masukkan kalimat salinan:");
         String kalimatSalinan = input.nextLine();
 
-        // Simpan ke CSV
-        FileHandler.simpanKeCSV("dataset.csv", kalimatSumber, kalimatSalinan);
-
         // Muat sinonim
         Map<String, String> sinonim = SinonimLoader.loadSinonim("sinonim.csv");
 
         // Cek plagiarisme
         PlagiarismDetector pendeteksi = new PlagiarismDetector(sinonim);
-        String laporan = pendeteksi.bandingkanStruktur(kalimatSumber, kalimatSalinan);
+        String laporan = pendeteksi.compareStructure(kalimatSumber, kalimatSalinan);
 
         System.out.println(laporan);
         input.close();

@@ -1,4 +1,3 @@
-package tugas_plagiarism;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
